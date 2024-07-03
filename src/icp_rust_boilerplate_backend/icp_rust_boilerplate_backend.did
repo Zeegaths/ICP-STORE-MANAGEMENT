@@ -1,3 +1,22 @@
+type Error = variant { NotFound : record { msg : text } };
+type InventoryItem = record {
+  id : nat64;
+  updated_at : opt nat64;
+  name : text;
+  created_at : nat64;
+  quantity : nat32;
+  price : float64;
+};
+type InventoryPayload = record {
+  name : text;
+  quantity : nat32;
+  price : float64;
+};
+type Result = variant { Ok : InventoryItem; Err : Error };
 service : {
-    "greet": (text) -> (text) query;
+  add_item : (InventoryPayload) -> (opt InventoryItem);
+  delete_item : (nat64) -> (Result);
+  get_item : (nat64) -> (Result) query;
+  list_items : () -> (vec InventoryItem) query;
+  update_item : (nat64, InventoryPayload) -> (Result);
 }
